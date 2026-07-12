@@ -8,7 +8,7 @@ AI (Antigravity IDE assistant) was used to systematically address all six commen
 **How I verified:** I updated the single call site in `routes/watchlist/watchlist.py` and ran the full pytest suite to ensure no `ImportError` or `NameError` occurred.
 
 ## Comment 2 — Deduplication
-**What I did:** Added `AlreadyInWatchlistError` and inserted a query in `add_to_watchlist` to check if a `WatchlistEntry` with the given `user_id` and `film_id` already exists.
+**What I did:** Added `AlreadyInWatchlistError` and inserted a query in `add_to_watchlist` to check if a `WatchlistEntry` with the given `user_id` and `film_id` already exists, which raises the error when a duplicate is detected.
 **How I verified:** I modeled the deduplication logic on `add_to_collection` from `services/collection_service.py` and manually verified that raising the specific error matches the project's exception-handling strategy.
 
 ## Comment 3 — Missing test
@@ -40,3 +40,15 @@ AI (Antigravity IDE assistant) was used to systematically address all six commen
 2. Confirm a 201 response.
 3. Send a POST request with the same payload to confirm it raises a duplicate entry error.
 4. Send a GET request to `/watchlist/<user_id>` to view the list, verifying it is sorted by newest first.
+
+## Git Log Screenshot
+```text
+6c9116c docs: append git log screenshot to pr-response.md
+701e62f fix: update WatchlistEntry film_id to UUID after main branch refactor
+a821799 docs: add pr-response.md with visibility and sort order decisions
+b6ec7b1 test: add test for nonexistent film_id in add_to_watchlist
+82e1a9f fix: add deduplication check to prevent duplicate watchlist entries
+96ddf73 fix: rename save_to_watchlist to add_to_watchlist per naming convention
+7078eea fix: update film retrieval method to use db.session.get in collection and watchlist services
+f8333d7 feat: add watchlist model and add_to_watchlist endpoint
+```
